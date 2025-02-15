@@ -12,10 +12,10 @@ import javax.swing.table.DefaultTableModel;
 public class UserDAO {
 
     public static void showUsers(JTable jTable1) {
-        try(Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
-            
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
+
             Statement statement = conn.createStatement();
-            String sql = "SELECT * FROM users";
+            String sql = "SELECT * FROM users WHERE status = 'active'";
             ResultSet result = statement.executeQuery(sql);
             // System.out.print(result.getString(0));
 
@@ -23,6 +23,7 @@ public class UserDAO {
             model.setRowCount(0);
 
             while (result.next()) {
+                 String userId = result.getString("id");
                 String lastName = result.getString("lastName");
                 String firstName = result.getString("firstName");
                 String middleName = result.getString("middleName");
@@ -34,7 +35,7 @@ public class UserDAO {
                 String email = result.getString("email");
                 String contactNumber = result.getString("contactNumber");
 
-                String tbData[] = { lastName, firstName, middleName, age, dateOfBirth, civilStatus, course, section,
+                String tbData[] = { userId, lastName, firstName, middleName, age, dateOfBirth, civilStatus, course, section,
                         email, contactNumber };
                 model.addRow(tbData);
             }
