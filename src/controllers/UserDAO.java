@@ -23,7 +23,7 @@ public class UserDAO {
             model.setRowCount(0);
 
             while (result.next()) {
-                String userId = result.getString("id");
+                 String userId = result.getString("id");
                 String lastName = result.getString("lastName");
                 String firstName = result.getString("firstName");
                 String middleName = result.getString("middleName");
