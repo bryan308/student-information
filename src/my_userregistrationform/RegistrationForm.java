@@ -1,3 +1,4 @@
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -6,66 +7,69 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import controllers.UserDAO;
+import java.awt.print.PrinterException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegistrationForm extends javax.swing.JFrame {
 
-  private int selectedRowIndex = -1;
-  private int userId;
+    private int selectedRowIndex = -1;
+    private int userId;
 
-  public RegistrationForm() {
-    initComponents();
-    UserDAO.showUsers(jTable1);
-    disableTextFields();
-    btnAdd.setEnabled(true);
-    btnSave.setEnabled(false);
-    btnClear.setEnabled(false);
-    btnClose.setEnabled(true);
-    btnEdit.setEnabled(false);
-    btnDelete.setEnabled(false);
-  }
+    public RegistrationForm() {
+        initComponents();
+        UserDAO.showUsers(jTable1);
+        disableTextFields();
+        btnAdd.setEnabled(true);
+        btnSave.setEnabled(false);
+        btnClear.setEnabled(false);
+        btnClose.setEnabled(true);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+    }
 
-  private void disableTextFields() {
-    txtLastName.setEnabled(false);
-    txtFirstName.setEnabled(false);
-    txtMiddleName.setEnabled(false);
-    txtAge.setEnabled(false);
-    txtDateOfBirth.setEnabled(false);
-    txtCivilStatus.setEnabled(false);
-    txtCourse.setEnabled(false);
-    txtSection.setEnabled(false);
-    txtEmailAddress.setEnabled(false);
-    txtContactNumber.setEnabled(false);
-  }
+    private void disableTextFields() {
+        txtLastName.setEnabled(false);
+        txtFirstName.setEnabled(false);
+        txtMiddleName.setEnabled(false);
+        txtAge.setEnabled(false);
+        txtDateOfBirth.setEnabled(false);
+        txtCivilStatus.setEnabled(false);
+        txtCourse.setEnabled(false);
+        txtSection.setEnabled(false);
+        txtEmailAddress.setEnabled(false);
+        txtContactNumber.setEnabled(false);
+    }
 
-  private void enableTextFields() {
-    txtLastName.setEnabled(true);
-    txtFirstName.setEnabled(true);
-    txtMiddleName.setEnabled(true);
-    txtAge.setEnabled(true);
-    txtDateOfBirth.setEnabled(true);
-    txtCivilStatus.setEnabled(true);
-    txtCourse.setEnabled(true);
-    txtSection.setEnabled(true);
-    txtEmailAddress.setEnabled(true);
-    txtContactNumber.setEnabled(true);
-  }
+    private void enableTextFields() {
+        txtLastName.setEnabled(true);
+        txtFirstName.setEnabled(true);
+        txtMiddleName.setEnabled(true);
+        txtAge.setEnabled(true);
+        txtDateOfBirth.setEnabled(true);
+        txtCivilStatus.setEnabled(true);
+        txtCourse.setEnabled(true);
+        txtSection.setEnabled(true);
+        txtEmailAddress.setEnabled(true);
+        txtContactNumber.setEnabled(true);
+    }
 
-  private void clearTextFields() {
-    txtLastName.setText("");
-    txtFirstName.setText("");
-    txtMiddleName.setText("");
-    txtAge.setText("");
-    txtDateOfBirth.setText("");
-    txtCivilStatus.setText("");
-    txtCourse.setText("");
-    txtSection.setText("");
-    txtEmailAddress.setText("");
-    txtContactNumber.setText("");
-  }
+    private void clearTextFields() {
+        txtLastName.setText("");
+        txtFirstName.setText("");
+        txtMiddleName.setText("");
+        txtAge.setText("");
+        txtDateOfBirth.setText("");
+        txtCivilStatus.setText("");
+        txtCourse.setText("");
+        txtSection.setText("");
+        txtEmailAddress.setText("");
+        txtContactNumber.setText("");
+    }
 
-  @SuppressWarnings("unchecked")
-  // <editor-fold defaultstate="collapsed" desc="Generated
-  // <editor-fold defaultstate="collapsed" desc="Generated
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
   // Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
@@ -464,231 +468,248 @@ public class RegistrationForm extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
-    if (selectedRowIndex != -1) {
-      try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
-        String sql = "UPDATE users SET status=? WHERE id=?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, "inactive");
-        pstmt.setInt(2, userId);
-        int rowsUpdated = pstmt.executeUpdate();
-        if (rowsUpdated > 0) {
-          JOptionPane.showMessageDialog(this, "User successfully removed.");
-          UserDAO.showUsers(jTable1);
-          clearTextFields();
-          disableTextFields();
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
+        if (selectedRowIndex != -1) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
+                String sql = "UPDATE users SET status=? WHERE id=?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, "inactive");
+                pstmt.setInt(2, userId);
+                int rowsUpdated = pstmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    JOptionPane.showMessageDialog(this, "User successfully removed.");
+                    UserDAO.showUsers(jTable1);
+                    clearTextFields();
+                    disableTextFields();
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.");
         }
-      } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-      }
-    } else {
-      JOptionPane.showMessageDialog(this, "Please select a row to delete.");
     }
-  }
 
-  private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPrintActionPerformed
-    // TODO add your handling code here:
-  }// GEN-LAST:event_btnPrintActionPerformed
-
-  // ...existing code...
-  private void txtSearchInputActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSearchInputActionPerformed
-    String searchValue = txtSearchInput.getText().trim();
-    if (searchValue.length() > 3) {
-      try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
-        String sql = "SELECT * FROM users WHERE status='active' AND lastName LIKE ?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, "%" + searchValue + "%");
-        java.sql.ResultSet rs = pstmt.executeQuery();
-
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Clear existing rows
-
-        while (rs.next()) {
-          model.addRow(new Object[] {
-              rs.getInt("id"),
-              rs.getString("lastName"),
-              rs.getString("firstName"),
-              rs.getString("middleName"),
-              rs.getString("age"),
-              rs.getString("dateOfBirth"),
-              rs.getString("civilStatus"),
-              rs.getString("course"),
-              rs.getString("section"),
-              rs.getString("email"),
-              rs.getString("contactNumber")
-          });
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnPrintActionPerformed
+        try {
+            // GEN-FIRST:event_printBtnActionPerformed
+            jTable1.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-      } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-      }
-    } else {
-      UserDAO.showUsers(jTable1);
-    }
-  }// GEN-LAST:event_txtSearchInputActionPerformed
+    }// GEN-LAST:event_btnPrintActionPerformed
 
-  private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
-    selectedRowIndex = jTable1.getSelectedRow();
-    if (selectedRowIndex != -1) {
-      DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-      userId = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());
-      txtLastName.setText(model.getValueAt(selectedRowIndex, 1).toString());
-      txtFirstName.setText(model.getValueAt(selectedRowIndex, 2).toString());
-      txtMiddleName.setText(model.getValueAt(selectedRowIndex, 3).toString());
-      txtAge.setText(model.getValueAt(selectedRowIndex, 4).toString());
-      txtDateOfBirth.setText(model.getValueAt(selectedRowIndex, 5).toString());
-      txtCivilStatus.setText(model.getValueAt(selectedRowIndex, 6).toString());
-      txtCourse.setText(model.getValueAt(selectedRowIndex, 7).toString());
-      txtSection.setText(model.getValueAt(selectedRowIndex, 8).toString());
-      txtEmailAddress.setText(model.getValueAt(selectedRowIndex, 9).toString());
-      txtContactNumber.setText(model.getValueAt(selectedRowIndex, 10).toString());
+    private void txtSearchInputActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtSearchInputActionPerformed
+        String searchValue = txtSearchInput.getText().trim();
+        if (searchValue.length() > 2) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
+//                String sql = "SELECT * FROM users WHERE status='active' AND lastName LIKE ? OR firstName LIKE ? OR middleName LIKE ?";
+                String sql = "SELECT * FROM users WHERE status='active' AND lastName LIKE ?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, "%" + searchValue + "%");
+//                pstmt.setString(2, "%" + searchValue + "%");
+//                pstmt.setString(3, "%" + searchValue + "%");
+                java.sql.ResultSet rs = pstmt.executeQuery();
 
-      btnEdit.setEnabled(true);
-      btnDelete.setEnabled(true);
-      btnClear.setEnabled(false);
-      btnAdd.setEnabled(false);
-    }
-  }
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
 
-  private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
-    if (selectedRowIndex != -1) {
-      enableTextFields();
-      btnSave.setEnabled(true);
-      btnAdd.setEnabled(false);
-      btnEdit.setEnabled(false);
-      btnDelete.setEnabled(false);
-    } else {
-      JOptionPane.showMessageDialog(this, "Please select a row to edit.");
-    }
-  }
-
-  private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSaveActionPerformed
-    String lastName = txtLastName.getText();
-    String firstName = txtFirstName.getText();
-    String middleName = txtMiddleName.getText();
-    String age = txtAge.getText();
-    String dateOfBirth = txtDateOfBirth.getText();
-    String civilStatus = txtCivilStatus.getText();
-    String course = txtCourse.getText();
-    String section = txtSection.getText();
-    String email = txtEmailAddress.getText();
-    String contactNumber = txtContactNumber.getText();
-
-    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
-      if (selectedRowIndex != -1) {
-        // Update existing user
-        String sql = "UPDATE users SET lastName=?, firstName=?, middleName=?, age=?, dateOfBirth=?, civilStatus=?, course=?, section=?, email=?, contactNumber=? WHERE id=?";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, lastName);
-        pstmt.setString(2, firstName);
-        pstmt.setString(3, middleName);
-        pstmt.setString(4, age);
-        pstmt.setString(5, dateOfBirth);
-        pstmt.setString(6, civilStatus);
-        pstmt.setString(7, course);
-        pstmt.setString(8, section);
-        pstmt.setString(9, email);
-        pstmt.setString(10, contactNumber);
-        pstmt.setInt(11, userId);
-
-        int rowsUpdated = pstmt.executeUpdate();
-        if (rowsUpdated > 0) {
-          JOptionPane.showMessageDialog(this, "User updated successfully.");
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getInt("id"),
+                        rs.getString("lastName"),
+                        rs.getString("firstName"),
+                        rs.getString("middleName"),
+                        rs.getString("age"),
+                        rs.getString("dateOfBirth"),
+                        rs.getString("civilStatus"),
+                        rs.getString("course"),
+                        rs.getString("section"),
+                        rs.getString("email"),
+                        rs.getString("contactNumber")
+                    });
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            }
+        } else {
+            UserDAO.showUsers(jTable1);
         }
-      } else {
-        StringBuilder emptyFields = new StringBuilder();
-        if (lastName.trim().isEmpty())
-          emptyFields.append("• Last Name\n");
-        if (firstName.trim().isEmpty())
-          emptyFields.append("• First Name\n");
-        if (middleName.trim().isEmpty())
-          emptyFields.append("• Middle Name\n");
-        if (age.trim().isEmpty())
-          emptyFields.append("• Age\n");
-        if (dateOfBirth.trim().isEmpty())
-          emptyFields.append("• Date of Birth\n");
-        if (civilStatus.trim().isEmpty())
-          emptyFields.append("• Civil Status\n");
-        if (course.trim().isEmpty())
-          emptyFields.append("• Course\n");
-        if (section.trim().isEmpty())
-          emptyFields.append("• Section\n");
-        if (email.trim().isEmpty())
-          emptyFields.append("• Email\n");
-        if (contactNumber.trim().isEmpty())
-          emptyFields.append("• Contact Number\n");
+    }// GEN-LAST:event_txtSearchInputActionPerformed
 
-        // If there are empty fields, show a message and stop
-        if (emptyFields.length() > 0) {
-          JOptionPane.showMessageDialog(
-              this,
-              "Please fill in the following field(s):\n\n" + emptyFields.toString(),
-              "Missing Fields",
-              JOptionPane.WARNING_MESSAGE);
-          return;
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+        selectedRowIndex = jTable1.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            userId = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());
+            txtLastName.setText(model.getValueAt(selectedRowIndex, 1).toString());
+            txtFirstName.setText(model.getValueAt(selectedRowIndex, 2).toString());
+            txtMiddleName.setText(model.getValueAt(selectedRowIndex, 3).toString());
+            txtAge.setText(model.getValueAt(selectedRowIndex, 4).toString());
+            txtDateOfBirth.setText(model.getValueAt(selectedRowIndex, 5).toString());
+            txtCivilStatus.setText(model.getValueAt(selectedRowIndex, 6).toString());
+            txtCourse.setText(model.getValueAt(selectedRowIndex, 7).toString());
+            txtSection.setText(model.getValueAt(selectedRowIndex, 8).toString());
+            txtEmailAddress.setText(model.getValueAt(selectedRowIndex, 9).toString());
+            txtContactNumber.setText(model.getValueAt(selectedRowIndex, 10).toString());
+
+            btnEdit.setEnabled(true);
+            btnDelete.setEnabled(true);
+            btnClear.setEnabled(false);
+            btnAdd.setEnabled(false);
         }
-
-        // Insert new user
-        String sql = "INSERT INTO users(lastName, firstName, middleName, age, dateOfBirth, civilStatus, course, section, email, contactNumber, status) VALUES(?,?,?,?,?,?,?,?,?,?,'active')";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, lastName);
-        pstmt.setString(2, firstName);
-        pstmt.setString(3, middleName);
-        pstmt.setString(4, age);
-        pstmt.setString(5, dateOfBirth);
-        pstmt.setString(6, civilStatus);
-        pstmt.setString(7, course);
-        pstmt.setString(8, section);
-        pstmt.setString(9, email);
-        pstmt.setString(10, contactNumber);
-
-        int rowsInserted = pstmt.executeUpdate();
-        if (rowsInserted > 0) {
-          JOptionPane.showMessageDialog(this, "User registered successfully.");
-        }
-      }
-
-      UserDAO.showUsers(jTable1);
-      clearTextFields();
-      disableTextFields();
-      btnSave.setEnabled(false);
-      btnAdd.setEnabled(true);
-      btnEdit.setEnabled(false);
-      btnDelete.setEnabled(false);
-    } catch (SQLException e) {
-      JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-  }// GEN-LAST:event_btnSaveActionPerformed
 
-  private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddActionPerformed
-    enableTextFields();
-    btnAdd.setEnabled(false);
-    btnSave.setEnabled(true);
-    btnClear.setEnabled(true);
-    btnClose.setEnabled(true);
-    selectedRowIndex = -1;
-    clearTextFields();
-  }// GEN-LAST:event_btnAddActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
+        if (selectedRowIndex != -1) {
+            enableTextFields();
+            btnSave.setEnabled(true);
+            btnAdd.setEnabled(false);
+            btnEdit.setEnabled(false);
+            btnDelete.setEnabled(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to edit.");
+        }
+    }
 
-  private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnClearActionPerformed
-    clearTextFields();
-    btnAdd.setEnabled(true);
-    btnEdit.setEnabled(false);
-    btnDelete.setEnabled(false);
-    btnSave.setEnabled(false);
-    btnClear.setEnabled(false);
-  }// GEN-LAST:event_btnClearActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSaveActionPerformed
+        String lastName = txtLastName.getText();
+        String firstName = txtFirstName.getText();
+        String middleName = txtMiddleName.getText();
+        String age = txtAge.getText();
+        String dateOfBirth = txtDateOfBirth.getText();
+        String civilStatus = txtCivilStatus.getText();
+        String course = txtCourse.getText();
+        String section = txtSection.getText();
+        String email = txtEmailAddress.getText();
+        String contactNumber = txtContactNumber.getText();
 
-  private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCloseActionPerformed
-    System.exit(0);
-  }// GEN-LAST:event_btnCloseActionPerformed
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration", "root", "")) {
+            if (selectedRowIndex != -1) {
+                // Update existing user
+                String sql = "UPDATE users SET lastName=?, firstName=?, middleName=?, age=?, dateOfBirth=?, civilStatus=?, course=?, section=?, email=?, contactNumber=? WHERE id=?";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, lastName);
+                pstmt.setString(2, firstName);
+                pstmt.setString(3, middleName);
+                pstmt.setString(4, age);
+                pstmt.setString(5, dateOfBirth);
+                pstmt.setString(6, civilStatus);
+                pstmt.setString(7, course);
+                pstmt.setString(8, section);
+                pstmt.setString(9, email);
+                pstmt.setString(10, contactNumber);
+                pstmt.setInt(11, userId);
 
-  public static void main(String args[]) {
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new RegistrationForm().setVisible(true);
-      }
-    });
-  }
+                int rowsUpdated = pstmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    JOptionPane.showMessageDialog(this, "✔ User updated successfully.");
+                }
+            } else {
+                StringBuilder emptyFields = new StringBuilder();
+                if (lastName.trim().isEmpty()) {
+                    emptyFields.append("• Last Name\n");
+                }
+                if (firstName.trim().isEmpty()) {
+                    emptyFields.append("• First Name\n");
+                }
+                if (middleName.trim().isEmpty()) {
+                    emptyFields.append("• Middle Name\n");
+                }
+                if (age.trim().isEmpty()) {
+                    emptyFields.append("• Age\n");
+                }
+                if (dateOfBirth.trim().isEmpty()) {
+                    emptyFields.append("• Date of Birth\n");
+                }
+                if (civilStatus.trim().isEmpty()) {
+                    emptyFields.append("• Civil Status\n");
+                }
+                if (course.trim().isEmpty()) {
+                    emptyFields.append("• Course\n");
+                }
+                if (section.trim().isEmpty()) {
+                    emptyFields.append("• Section\n");
+                }
+                if (email.trim().isEmpty()) {
+                    emptyFields.append("• Email\n");
+                }
+                if (contactNumber.trim().isEmpty()) {
+                    emptyFields.append("• Contact Number\n");
+                }
+
+                // If there are empty fields, show a message and stop
+                if (emptyFields.length() > 0) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Please fill in the following field(s):\n\n" + emptyFields.toString(),
+                            "Missing Fields",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Insert new user
+                String sql = "INSERT INTO users(lastName, firstName, middleName, age, dateOfBirth, civilStatus, course, section, email, contactNumber, status) VALUES(?,?,?,?,?,?,?,?,?,?,'active')";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, lastName);
+                pstmt.setString(2, firstName);
+                pstmt.setString(3, middleName);
+                pstmt.setString(4, age);
+                pstmt.setString(5, dateOfBirth);
+                pstmt.setString(6, civilStatus);
+                pstmt.setString(7, course);
+                pstmt.setString(8, section);
+                pstmt.setString(9, email);
+                pstmt.setString(10, contactNumber);
+
+                int rowsInserted = pstmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    JOptionPane.showMessageDialog(this, "✔ User registered successfully.");
+                }
+            }
+
+            UserDAO.showUsers(jTable1);
+            clearTextFields();
+            disableTextFields();
+            btnSave.setEnabled(false);
+            btnAdd.setEnabled(true);
+            btnEdit.setEnabled(false);
+            btnDelete.setEnabled(false);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }// GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddActionPerformed
+        enableTextFields();
+        btnAdd.setEnabled(false);
+        btnSave.setEnabled(true);
+        btnClear.setEnabled(true);
+        btnClose.setEnabled(true);
+        selectedRowIndex = -1;
+        clearTextFields();
+    }// GEN-LAST:event_btnAddActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnClearActionPerformed
+        clearTextFields();
+        btnAdd.setEnabled(true);
+        btnEdit.setEnabled(false);
+        btnDelete.setEnabled(false);
+        btnSave.setEnabled(false);
+        btnClear.setEnabled(false);
+    }// GEN-LAST:event_btnClearActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCloseActionPerformed
+        System.exit(0);
+    }// GEN-LAST:event_btnCloseActionPerformed
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RegistrationForm().setVisible(true);
+            }
+        });
+    }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton btnAdd;
